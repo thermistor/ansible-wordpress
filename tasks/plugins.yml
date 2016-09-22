@@ -1,0 +1,6 @@
+---
+
+- name: Install wordpress plugins
+  subversion: repo=http://plugins.svn.wordpress.org/{{ item.name }}/{{ item.version }}/ dest={{ wordpress_dir }}/wp-content/plugins/{{ item.name }}
+  become_user: '{{ wordpress_user }}'
+  with_items: '{{ wordpress_plugins }}'

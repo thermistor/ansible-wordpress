@@ -1,0 +1,29 @@
+---
+
+- name: Install package dependencies for wordpress
+  apt: pkg={{ item }}
+  with_items: '{{ wordpress_pkg_dependencies }}'
+
+- include: user.yml
+  tags:
+    - wordpress_user
+
+- include: deploy.yml
+  tags:
+    - wordpress_deploy
+
+- include: plugins.yml
+  tags:
+    - wordpress_plugins
+
+- include: mysql.yml
+  tags:
+    - wordpress_mysql
+
+- include: vhost.yml
+  tags:
+    - wordpress_vhost
+
+- include: vhost_redirect.yml
+  tags:
+    - wordpress_vhost_redirect

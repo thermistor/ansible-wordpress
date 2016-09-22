@@ -1,0 +1,47 @@
+---
+
+- name: Ensure the base website directory exists
+  file: path={{ wordpress_base_dir }} state=directory owner={{ wordpress_user }} group={{ wordpress_user }} mode=0755
+
+# FIXME to check for Gemfile instead
+- name: Check if app already deployed
+  command: test -f {{ wordpress_code }}/Rakefile
+  register: deploy_exists
+  ignore_errors: True
+
+- name: Clone the github repo
+  become: no
+  git: repo={{ wordpress_git_repo }}
+       dest={{ wordpress_shortname }}
+       version={{ wordpress_git_branch }}
+       accept_hostkey=yes
+  when: deploy_exists|failed
+
+- name: Move the repo into place as the deployment
+  command: mv -fT {{ wordpress_shortname }} {{ wordpress_code }}
+  when: deploy_exists|failed
+
+- name: Fix the deployed code ownership
+  file: dest={{ wordpress_code }} state=directory owner={{ wordpress_user }} group={{ wordpress_user }} recurse=yes
+  when: deploy_exists|failed
+
+- name: make a symlink for convenience
+  file: src={{ wordpress_code }} path=/home/{{ wordpress_user }}/{{ env }} state=link
+  when: deploy_exists|failed
+
+- name: Deploy wordpress from svn
+  subversion: repo=https://svn.automattic.com/wordpress/tags/{{ wordpress_version }} dest={{ wordpress_dir }}
+
+- name: Fix the wordpress svn code ownership
+  file: dest={{ wordpress_dir }} state=directory owner={{ wordpress_user }} group={{ wordpress_user }} recurse=yes
+
+- name: Configure the wp-config.php
+  template: src=wp-config.php.j2
+            dest={{ wordpress_dir }}/wp-config.php
+            owner={{ wordpress_user }}
+            group={{ wordpress_user }}
+            mode=0644
+
+- name: Create writeable uploads dir for wordpress site
+  file: path={{ wordpress_dir}}/wp-content/uploads state=directory owner={{ wordpress_user }} group={{ wordpress_user }} mode=0775 recurse=yes
+

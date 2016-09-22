@@ -1,0 +1,14 @@
+---
+
+- name: Create the database for the wordpress site
+  mysql_db: name={{ wordpress_db }} state=present
+
+- name: Create the database user for the wordpress site
+  mysql_user:
+    name: '{{ wordpress_db_user }}'
+    host: 'localhost'
+    priv: '{{ wordpress_db }}.*:ALL'
+    password: '{{ wordpress_db_password }}'
+
+- name: Install my.cnf file for the wordpress site user
+  template: src=my.cnf.j2 dest=/home/{{ wordpress_user }}/.my.cnf owner={{ wordpress_user }} group={{ wordpress_user }} mode=0600

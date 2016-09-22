@@ -1,0 +1,20 @@
+[user]
+  email = systems@netsign.com
+  name = Deployment User
+[merge]
+  tool = opendiff
+[alias]
+  st = status
+  ci = commit
+  br = branch
+  co = checkout
+  df = diff
+  last = log -1 HEAD
+  unstage = reset HEAD --
+  stash-unapply = !git stash show -p | git apply -R
+  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev --date=short
+[color]
+  ui = true
+[core]
+  excludesfile = ~/.gitignore
+  editor = nano

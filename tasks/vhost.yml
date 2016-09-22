@@ -1,0 +1,19 @@
+---
+
+- name: Generate the dhparam.pem file if not present
+  command: openssl dhparam -out /etc/ssl/certs/dhparam.pem 4096 creates=/etc/ssl/certs/dhparam.pem
+  when: wordpress_enable_https
+
+- name: Install the vhost for wordpress site
+  template: src=vhost.j2
+            dest=/etc/nginx/sites-available/{{ wordpress_site }}
+            mode=0644
+  notify:
+    - restart wordpress
+
+- name: Enable the wordpress virtual host
+  file: path=/etc/nginx/sites-enabled/{{ wordpress_site }}
+        src=/etc/nginx/sites-available/{{ wordpress_site }}
+        state=link
+  notify:
+    - restart wordpress

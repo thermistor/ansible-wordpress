@@ -1,0 +1,14 @@
+server {
+  listen 80;
+  {% if wordpress_enable_https %}
+  server_name {{ wordpress_site }} {{ wordpress_site_aliases|join(' ') }};
+  {% else %}
+  server_name {{ wordpress_site_aliases|join(' ') }};
+  {% endif %}
+
+  rewrite ^ {{ 'https' if wordpress_enable_https == True else '$scheme' }}://{{  wordpress_site }}$request_uri? permanent;
+
+  # solves http://stackoverflow.com/questions/17524396/400-bad-request-request-header-or-cookie-too-large
+  large_client_header_buffers 4 16k;
+
+}

@@ -1,0 +1,5 @@
+---
+
+- name: restart wordpress
+  service: name=nginx state=restarted
+  become: yes

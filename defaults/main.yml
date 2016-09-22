@@ -1,0 +1,51 @@
+---
+
+wordpress_version: 4.6
+
+wordpress_pkg_dependencies:
+  - subversion
+  - curl
+  - libcurl3
+  - libcurl3-dev
+  - php
+  - php-curl
+  - php-fpm
+  - php-gd
+  - php-mysql
+
+wordpress_production_site: example.com
+wordpress_site: "{{ wordpress_production_site if env == 'production' else (env ~ '.' ~ wordpress_production_site) }}"
+wordpress_site_aliases:
+  - '{{ ansible_fqdn }}'
+  - 'www.{{  wordpress_site }}'
+wordpress_enable_https: False
+
+wordpress_ssl_cert: /etc/letsencrypt/live/{{ wordpress_site }}/fullchain.pem
+wordpress_ssl_cert_key: /etc/letsencrypt/live/{{ wordpress_site }}/privkey.pem
+
+wordpress_nginx_vhost_custom: ''
+
+wordpress_shortname: myblog
+wordpress_base_dir: /srv/www/{{ wordpress_production_site }}
+wordpress_code: "{{ wordpress_base_dir }}/{{ wordpress_shortname }}"
+wordpress_dir: "{{ wordpress_base_dir }}/public_html"
+
+wordpress_user: "{{ wordpress_shortname }}"
+
+wordpress_git_repo: ssh://git@github.com/foo/myblog.git
+wordpress_git_branch: master
+
+wordpress_db: "{{ wordpress_shortname }}_{{ env }}"
+wordpress_db_user: "{{ wordpress_user }}"
+wordpress_db_password: 'override this'
+
+wordpress_auth_key: d34db33f
+wordpress_secure_auth_key: d34db33f
+wordpress_logged_in_key: d34db33f
+wordpress_nonce_key: d34db33f
+wordpress_auth_salt: d34db33f
+wordpress_secure_auth_salt: d34db33f
+wordpress_logged_in_salt: d34db33f
+wordpress_nonce_salt: d3adb33f
+
+wordpress_php_fpm_socket: unix:/var/run/php/php7.0-fpm.sock

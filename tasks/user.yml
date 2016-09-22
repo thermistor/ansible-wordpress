@@ -1,0 +1,29 @@
+---
+
+- name: Add user for wordpress site
+  user: name={{ wordpress_user }} shell=/bin/bash
+
+- name: Make www-data a member of wordpress user's group so can write to uploads dir
+  user: name=www-data groups={{ wordpress_user}}
+
+- name: Install the authorized keys for wordpress deployers
+  authorized_key:
+    user: "{{ wordpress_user }}"
+    key: "{{ item }}"
+  with_items: "{{ vault_cswp_deployer_keys }}"
+  tags:
+    - security
+
+# from https://gist.github.com/maxim/871e611d4bc02c633c67
+- name: Ensure github.com is a known host for {{ wordpress_user }}
+  lineinfile:
+    dest: ~{{ wordpress_user }}/.ssh/known_hosts
+    create: yes
+    state: present
+    line: "{{ lookup('pipe', 'ssh-keyscan -t rsa github.com') }}"
+    regexp: "^github\\.com"
+    owner: "{{ wordpress_user }}"
+    group: "{{ wordpress_user }}"
+
+- name: Add .gitconfig for {{ wordpress_user }}
+  copy: src=gitconfig dest=~{{ wordpress_user }}/.gitconfig owner={{ wordpress_user }} group={{ wordpress_user }} mode=0644
