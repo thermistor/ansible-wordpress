@@ -1,6 +1,6 @@
 ---
 
-wordpress_version: 4.6
+wordpress_version: 4.6.1
 
 wordpress_pkg_dependencies:
   - subversion
@@ -26,14 +26,18 @@ wordpress_ssl_cert_key: /etc/letsencrypt/live/{{ wordpress_site }}/privkey.pem
 wordpress_nginx_vhost_custom: ''
 
 wordpress_shortname: myblog
-wordpress_base_dir: /srv/www/{{ wordpress_production_site }}
-wordpress_code: "{{ wordpress_base_dir }}/{{ wordpress_shortname }}"
-wordpress_dir: "{{ wordpress_base_dir }}/public_html"
 
 wordpress_user: "{{ wordpress_shortname }}"
 
+wordpress_base_dir: /srv/www/{{ wordpress_production_site }}
+wordpress_code: "{{ wordpress_base_dir }}/{{ wordpress_shortname }}"
+wordpress_dir: "{{ wordpress_code }}/public_html"
+
 wordpress_git_repo: ssh://git@github.com/foo/myblog.git
 wordpress_git_branch: master
+
+wordpress_symlink_deploy: yes
+wordpress_symlink_theme: "{{ wordpress_shortname }}"
 
 wordpress_db: "{{ wordpress_shortname }}_{{ env }}"
 wordpress_db_user: "{{ wordpress_user }}"

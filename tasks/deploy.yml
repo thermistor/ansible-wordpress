@@ -3,9 +3,8 @@
 - name: Ensure the base website directory exists
   file: path={{ wordpress_base_dir }} state=directory owner={{ wordpress_user }} group={{ wordpress_user }} mode=0755
 
-# FIXME to check for Gemfile instead
 - name: Check if app already deployed
-  command: test -f {{ wordpress_code }}/Rakefile
+  command: test -f {{ wordpress_code }}/Gemfile
   register: deploy_exists
   ignore_errors: True
 
@@ -27,7 +26,7 @@
 
 - name: make a symlink for convenience
   file: src={{ wordpress_code }} path=/home/{{ wordpress_user }}/{{ env }} state=link
-  when: deploy_exists|failed
+  when: wordpress_symlink_deploy and deploy_exists|failed
 
 - name: Deploy wordpress from svn
   subversion: repo=https://svn.automattic.com/wordpress/tags/{{ wordpress_version }} dest={{ wordpress_dir }}
@@ -45,3 +44,8 @@
 - name: Create writeable uploads dir for wordpress site
   file: path={{ wordpress_dir}}/wp-content/uploads state=directory owner={{ wordpress_user }} group={{ wordpress_user }} mode=0775 recurse=yes
 
+- name: Symlink the custom theme
+  file: src={{ wordpress_code }}/src/themes/{{ wordpress_symlink_theme}}
+        path={{ wordpress_dir }}/wp-content/themes/{{ wordpress_symlink_theme }}
+        state=link
+  when: wordpress_symlink_theme is defined
