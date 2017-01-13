@@ -1,0 +1,13 @@
+---
+
+# - name: Symlink the custom theme
+#   file: src={{ wordpress_code }}/src/themes/{{ wordpress_symlink_theme}}
+#         path={{ wordpress_dir }}/wp-content/themes/{{ wordpress_symlink_theme }}
+#         state=link
+#   when: wordpress_symlink_theme is defined
+
+- name: Symlink themes
+  file: src={{ wordpress_code }}/src/themes/{{ item}}
+        path={{ wordpress_dir }}/wp-content/themes/{{ item }}
+        state=link
+  with_items: '{{ wordpress_themes }}'

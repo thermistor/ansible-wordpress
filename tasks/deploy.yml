@@ -42,10 +42,4 @@
             mode=0644
 
 - name: Create writeable uploads dir for wordpress site
-  file: path={{ wordpress_dir}}/wp-content/uploads state=directory owner={{ wordpress_user }} group={{ wordpress_user }} mode=0775 recurse=yes
-
-- name: Symlink the custom theme
-  file: src={{ wordpress_code }}/src/themes/{{ wordpress_symlink_theme}}
-        path={{ wordpress_dir }}/wp-content/themes/{{ wordpress_symlink_theme }}
-        state=link
-  when: wordpress_symlink_theme is defined
+  file: path={{ wordpress_dir}}/wp-content/uploads state=directory owner={{ wordpress_user }} group={{ wordpress_user }} mode=0775

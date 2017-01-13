@@ -12,6 +12,10 @@
   tags:
     - wordpress_deploy
 
+- include: themes.yml
+  tags:
+    - wordpress_themes
+
 - include: plugins.yml
   tags:
     - wordpress_plugins
@@ -27,3 +31,4 @@
 - include: vhost_redirect.yml
   tags:
     - wordpress_vhost_redirect
+  when: wordpress_enable_redirect

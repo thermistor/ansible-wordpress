@@ -3,6 +3,10 @@
 - name: Add user for wordpress site
   user: name={{ wordpress_user }} shell=/bin/bash
 
+- name: Set password for wordpress user if present
+  user: name={{ wordpress_user }} password={{ wordpress_user_password }}
+  when: wordpress_user_password is defined
+
 - name: Make www-data a member of wordpress user's group so can write to uploads dir
   user: name=www-data groups={{ wordpress_user}}
 

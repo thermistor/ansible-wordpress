@@ -1,6 +1,6 @@
 ---
 
-wordpress_version: 4.6.1
+wordpress_version: 4.7.1
 
 wordpress_pkg_dependencies:
   - subversion
@@ -19,6 +19,7 @@ wordpress_site_aliases:
   - '{{ ansible_fqdn }}'
   - 'www.{{  wordpress_site }}'
 wordpress_enable_https: False
+wordpress_enable_redirect: True
 
 wordpress_ssl_cert: /etc/letsencrypt/live/{{ wordpress_site }}/fullchain.pem
 wordpress_ssl_cert_key: /etc/letsencrypt/live/{{ wordpress_site }}/privkey.pem
@@ -37,7 +38,6 @@ wordpress_git_repo: ssh://git@github.com/foo/myblog.git
 wordpress_git_branch: master
 
 wordpress_symlink_deploy: yes
-wordpress_symlink_theme: "{{ wordpress_shortname }}"
 
 wordpress_db: "{{ wordpress_shortname }}_{{ env }}"
 wordpress_db_user: "{{ wordpress_user }}"

@@ -5,12 +5,12 @@
             dest=/etc/nginx/sites-available/{{ wordpress_site }}_redirect
             mode=0644
   notify:
-    - restart nginx
+    - restart wordpress
 
 - name: Enable the {{ wordpress_shortname }} virtual host redirects
   file: path=/etc/nginx/sites-enabled/{{ wordpress_site }}_redirect
         src=/etc/nginx/sites-available/{{ wordpress_site }}_redirect
         state=link
   notify:
-    - restart nginx
+    - restart wordpress
 
