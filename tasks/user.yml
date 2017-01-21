@@ -8,7 +8,7 @@
   when: wordpress_user_password is defined
 
 - name: Make www-data a member of wordpress user's group so can write to uploads dir
-  user: name=www-data groups={{ wordpress_user}}
+  user: name=www-data append=yes groups={{ wordpress_user }}
 
 - name: Install the authorized keys for wordpress deployers
   authorized_key:

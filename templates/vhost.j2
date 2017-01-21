@@ -37,9 +37,20 @@ server {
   server_name {{ wordpress_site }};
 {% endif %}
 
+  # solves http://stackoverflow.com/questions/17524396/400-bad-request-request-header-or-cookie-too-large
+  large_client_header_buffers 4 16k;
+  # allow for uploads of up to 20m
+  client_max_body_size 20m;
+
   root {{ wordpress_dir }};
 
   index index.php;
+
+  # allow letsencrypt renewal script to work
+  location ~ /\.well-known {
+    allow all;
+    break;
+  }
 
   # Deny all attempts to access hidden files such as .htaccess, .htpasswd, .DS_Store (Mac).
   # Keep logging the requests to parse later (or to pass to firewall utilities such as fail2ban)
