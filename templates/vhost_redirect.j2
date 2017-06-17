@@ -1,5 +1,7 @@
 server {
   listen 80;
+  listen [::]:80;
+
   {% if wordpress_enable_https %}
   server_name {{ wordpress_site }} {{ wordpress_site_aliases|join(' ') }};
   {% else %}
