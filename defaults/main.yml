@@ -1,7 +1,7 @@
 ---
 
-wordpress_version: 4.8.1
-wordpress_akismet_version: 3.3.4
+wordpress_version: 4.9.2
+wordpress_akismet_version: 4.0.2
 
 wordpress_pkg_dependencies:
   - subversion
@@ -20,7 +20,7 @@ wordpress_site_aliases:
   - '{{ ansible_fqdn }}'
   - 'www.{{  wordpress_site }}'
 wordpress_enable_https: False
-wordpress_enable_redirect: True
+wordpress_enable_redirect: False
 
 wordpress_ssl_cert: /etc/letsencrypt/live/{{ wordpress_site }}/fullchain.pem
 wordpress_ssl_cert_key: /etc/letsencrypt/live/{{ wordpress_site }}/privkey.pem
