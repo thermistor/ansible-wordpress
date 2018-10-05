@@ -29,10 +29,14 @@
   when: wordpress_symlink_deploy and deploy_exists|failed
 
 - name: Deploy wordpress from svn
-  subversion: repo=https://svn.automattic.com/wordpress/tags/{{ wordpress_version }} dest={{ wordpress_dir }}
+  subversion: repo=https://svn.automattic.com/wordpress/tags/{{ wordpress_version }} dest={{ wordpress_dir }} switch=yes
+  tags:
+    - wordpress_update
 
 - name: Fix the wordpress svn code ownership
   file: dest={{ wordpress_dir }} state=directory owner={{ wordpress_user }} group={{ wordpress_user }} recurse=yes
+  tags:
+    - wordpress_update
 
 - name: Configure the wp-config.php
   template: src=wp-config.php.j2
