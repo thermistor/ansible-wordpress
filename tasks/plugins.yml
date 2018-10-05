@@ -1,10 +1,10 @@
 ---
 
 - name: Update askismet
-  subversion: repo=https://plugins.svn.wordpress.org/akismet/tags/{{ wordpress_akismet_version }} dest={{ wordpress_dir }}/wp-content/plugins/akismet
+  subversion: repo=https://plugins.svn.wordpress.org/akismet/tags/{{ wordpress_akismet_version }} dest={{ wordpress_dir }}/wp-content/plugins/akismet switch=yes
   become_user: '{{ wordpress_user }}'
 
 - name: Install wordpress plugins
-  subversion: repo=https://plugins.svn.wordpress.org/{{ item.name }}/{{ item.version }}/ dest={{ wordpress_dir }}/wp-content/plugins/{{ item.name }} force=yes
+  subversion: repo=https://plugins.svn.wordpress.org/{{ item.name }}/{{ item.version }}/ dest={{ wordpress_dir }}/wp-content/plugins/{{ item.name }} switch=yes force=yes
   become_user: '{{ wordpress_user }}'
   with_items: '{{ wordpress_plugins }}'

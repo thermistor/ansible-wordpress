@@ -1,7 +1,7 @@
 ---
 
-wordpress_version: 4.9.5
-wordpress_akismet_version: 4.0.3
+wordpress_version: 4.9.8
+wordpress_akismet_version: 4.0.8
 
 wordpress_pkg_dependencies:
   - subversion
