@@ -1,8 +1,7 @@
 ---
 
 - name: Install package dependencies for wordpress
-  apt: pkg={{ item }}
-  with_items: '{{ wordpress_pkg_dependencies }}'
+  apt: pkg={{ wordpress_pkg_dependencies }}
 
 - include: user.yml
   tags:

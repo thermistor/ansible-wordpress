@@ -14,19 +14,19 @@
        dest={{ wordpress_shortname }}
        version={{ wordpress_git_branch }}
        accept_hostkey=yes
-  when: deploy_exists|failed
+  when: deploy_exists is failed
 
 - name: Move the repo into place as the deployment
   command: mv -fT {{ wordpress_shortname }} {{ wordpress_code }}
-  when: deploy_exists|failed
+  when: deploy_exists is failed
 
 - name: Fix the deployed code ownership
   file: dest={{ wordpress_code }} state=directory owner={{ wordpress_user }} group={{ wordpress_user }} recurse=yes
-  when: deploy_exists|failed
+  when: deploy_exists is failed
 
 - name: make a symlink for convenience
   file: src={{ wordpress_code }} path=/home/{{ wordpress_user }}/{{ env }} state=link
-  when: wordpress_symlink_deploy and deploy_exists|failed
+  when: wordpress_symlink_deploy and deploy_exists is failed
 
 - name: Deploy wordpress from svn
   subversion: repo=https://svn.automattic.com/wordpress/tags/{{ wordpress_version }} dest={{ wordpress_dir }} switch=yes
